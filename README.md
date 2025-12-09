@@ -1,119 +1,152 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>MNIST ML Models — README</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MNIST_Classification — README</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial; line-height: 1.6; color: #111; background:#f7f9fc; padding: 24px; }
-    .container { max-width: 900px; margin: 0 auto; background: #fff; border-radius: 8px; box-shadow: 0 6px 20px rgba(13,38,76,0.06); padding: 28px; }
-    h1 { margin-top: 0; color: #0b57a4; letter-spacing: -0.5px; }
-    h2 { color: #0b57a4; font-size: 1.05rem; }
-    pre { background:#0f1720; color:#d1f0ff; padding:12px; border-radius:6px; overflow:auto; }
-    code { background:#eef6ff; padding:2px 6px; border-radius:4px; font-family: monospace; }
-    .badge { display:inline-block; margin-right:8px; padding:4px 8px; background:#e8f2ff; color:#0b57a4; border-radius:6px; font-weight:600; font-size:0.9rem; }
-    ul { margin-top:0; }
-    .footer { font-size:0.9rem; color:#555; margin-top:28px; border-top:1px solid #eee; padding-top:16px; }
-    .image { max-width:100%; border-radius:6px; border:1px solid #eee; margin:12px 0; }
-    .right { float:right; margin-left:12px; max-width:240px; }
-    .note { background:#fff7dd; border-left:4px solid #ffd54d; padding:10px 12px; border-radius:6px; }
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;line-height:1.6;padding:24px;color:#0b1220;background:#f7f8fb}
+    header{max-width:900px;margin:0 auto 18px}
+    main{max-width:900px;margin:0 auto;background:white;padding:22px;border-radius:12px;box-shadow:0 6px 20px rgba(12,15,30,0.06)}
+    h1{margin:0 0 6px;font-size:28px}
+    p.lead{color:#374151}
+    pre{background:#0b1220;color:#e6eef8;padding:12px;border-radius:8px;overflow:auto}
+    code{background:#eef2ff;padding:2px 6px;border-radius:4px}
+    section{margin-top:18px}
+    ul{margin-left:18px}
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#eef2ff;margin-right:8px;font-size:13px}
+    footer{max-width:900px;margin:18px auto;color:#6b7280;font-size:13px}
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>MNIST Classification Using Machine Learning Models</h1>
+  <header>
+    <h1>MNIST Classification Pipeline</h1>
+    <p class="lead">A simple, modular pipeline to train and evaluate multiple classical ML models on the MNIST-style CSV image dataset (pixel columns + label). This repository includes model training, evaluation (accuracy & classification report), ROC–AUC (one-vs-rest for class `1`), and GridSearchCV hyperparameter tuning.</p>
+  </header>
 
-    <p><strong>Author:</strong> Pavan Illal</p>
+  <main>
+    <section>
+      <div class="badge">Python</div>
+      <div class="badge">scikit-learn</div>
+      <div class="badge">pandas</div>
+      <div class="badge">matplotlib</div>
+    </section>
 
-    <!-- If you want to show the banner, add the image file to your repo and update the path below -->
-    <!-- Example: <img src="assets/banner.png" alt="MNIST Project" class="image"> -->
-    <img src="assets/mnist_banner.png" alt="MNIST project banner" class="right image" />
+    <section>
+      <h2>Table of contents</h2>
+      <ol>
+        <li>Overview</li>
+        <li>Repository structure</li>
+        <li>Requirements</li>
+        <li>How to run</li>
+        <li>What the script does</li>
+        <li>Expected outputs</li>
+        <li>Troubleshooting</li>
+        <li>Extending the project</li>
+        <li>License & Contact</li>
+      </ol>
+    </section>
 
-    <p>
-      This repository demonstrates an end-to-end machine learning workflow on the <strong>MNIST</strong> dataset (handwritten digit recognition).
-      Multiple classification models are implemented, compared and evaluated using metrics such as accuracy, confusion matrix, classification report,
-      ROC curves and AUC (macro-average). The best-performing model is then tuned using <code>GridSearchCV</code> and saved for later use.
-    </p>
+    <section>
+      <h2>Overview</h2>
+      <p>This project demonstrates training multiple classical ML models (Logistic Regression, KNN, SVM, Decision Tree, Random Forest, Naive Bayes, Gradient Boosting) on an MNIST-style CSV file where each row contains a <code>label</code> column and pixel features (e.g. <code>pixel0, pixel1, ...</code>).</p>
+    </section>
 
-    <h2>Project Highlights</h2>
-    <ul>
-      <li>Models implemented: <strong>Logistic Regression, KNN, SVM, Decision Tree, Random Forest, Gradient Boosting, XGBoost, Naive Bayes</strong></li>
-      <li>Evaluation: <strong>Accuracy, Confusion Matrix, Precision/Recall/F1</strong> and <strong>ROC–AUC (one-vs-rest, macro-average)</strong></li>
-      <li>Hyperparameter tuning: <code>GridSearchCV</code> for the chosen best model</li>
-      <li>Model persistence: Save the final model using <code>pickle</code></li>
-    </ul>
+    <section>
+      <h2>Repository structure</h2>
+      <pre><code>.
+├─ README_MNIST_Classification.html   # (this file)
+├─ mnist_classification.py            # main class-based pipeline (MNIST_CLASSIFICATION)
+├─ requirements.txt                   # recommended packages
+└─ data/
+   └─ mnist_test.csv                   # example CSV (not included)
+</code></pre>
+    </section>
 
-    <h2>Dataset</h2>
-    <p>
-      Dataset used: <strong>MNIST in CSV</strong> (Kaggle). If you don't include the full dataset in the repo, provide a link or instructions to download it:
-    </p>
-    <ul>
-      <li>Download from Kaggle: <code>https://www.kaggle.com/datasets/oddrationale/mnist-in-csv</code></li>
-      <li>Place the file(s) in the repo root or a <code>data/</code> folder (example names used in code: <code>mnist_train.csv</code>, <code>mnist_test.csv</code>).</li>
-    </ul>
+    <section>
+      <h2>Requirements</h2>
+      <p>Recommended Python packages (tested with Python 3.8+):</p>
+      <pre><code>pip install numpy pandas matplotlib scikit-learn</code></pre>
+      <p>Optional: create a <code>requirements.txt</code> with:</p>
+      <pre><code>numpy
+pandas
+matplotlib
+scikit-learn</code></pre>
+    </section>
 
-    <h2>Quick Setup (Local)</h2>
-    <p>Run these commands in your terminal (assumes you have Python & pip installed):</p>
-    <pre>python -m venv venv
-source venv/bin/activate   # macOS / Linux
-venv\Scripts\activate      # Windows
+    <section>
+      <h2>How to run</h2>
+      <p>Place your MNIST-style CSV file (with a <code>label</code> column and pixel feature columns) somewhere accessible and update the <code>dataset_path</code> in the script or pass the path when instantiating the class.</p>
 
-pip install -r requirements.txt</pre>
+      <p>Example — run as a script:</p>
+      <pre><code>python mnist_classification.py
+# or if your script file name differs, update accordingly</code></pre>
 
-    <p>If you don't have <code>requirements.txt</code>, install minimal packages:</p>
-    <pre>pip install numpy pandas scikit-learn matplotlib xgboost</pre>
+      <p>If you prefer to run from an interactive notebook:</p>
+      <pre><code>from mnist_classification import MNIST_CLASSIFICATION
+obj = MNIST_CLASSIFICATION('/path/to/mnist_test.csv')
+obj.execute_models()
+obj.roc_auc_stage2()
+obj.stage3_gridsearch()</code></pre>
 
-    <h2>How to run</h2>
-    <ol>
-      <li>Open the notebook in Google Colab: <code>MNIST_Project.ipynb</code> (recommended) or run the Python script <code>mnist_prediction.py</code> locally.</li>
-      <li>Make sure dataset CSV(s) are available in the working directory or update the path in the script/notebook.</li>
-      <li>Run the cells (Colab) or run the script:
-        <pre>python mnist_prediction.py</pre>
-      </li>
-      <li>Outputs will include model accuracies, confusion matrices, ROC curves and AUC scores. The chosen best model will be tuned with GridSearchCV and saved.</li>
-    </ol>
+      <p><strong>Important:</strong> Update the dataset path inside the <code>if __name__ == '__main__'</code> block before running, or pass a correct path when creating the object.</p>
+    </section>
 
-    <h2>Files in this repository</h2>
-    <ul>
-      <li><code>MNIST_Project.ipynb</code> — Google Colab notebook with step-by-step code and results.</li>
-      <li><code>mnist_prediction.py</code> — Standalone python script (same pipeline as notebook).</li>
-      <li><code>requirements.txt</code> — Python package list (use <code>pip install -r requirements.txt</code>).</li>
-      <li><code>data/</code> — (recommended) folder for dataset CSV files (not included if dataset is large).</li>
-      <li><code>assets/</code> — images (banner, plots) used in README or docs.</li>
-      <li><code>best_mnist_model.pkl</code> — (optional) serialized final model.</li>
-    </ul>
+    <section>
+      <h2>What the script does (high level)</h2>
+      <ul>
+        <li>Reads CSV into a Pandas DataFrame and splits <code>X</code> and <code>y</code>.</li>
+        <li>Performs a train/test split (80/20).</li>
+        <li>Stage 1: Trains multiple classification models and prints accuracy, confusion matrix, and classification report for each.</li>
+        <li>Stage 2: Calculates ROC & AUC for class <code>1</code> vs rest (one-vs-rest); plots ROC curves and reports AUC scores for each model.</li>
+        <li>Stage 3: Picks best model by AUC and runs GridSearchCV to tune hyperparameters (skips tuning for Naive Bayes).</li>
+      </ul>
+    </section>
 
-    <h2>Evaluation & Outputs</h2>
-    <p>
-      Typical outputs in the notebook include:
-    </p>
-    <ul>
-      <li>Accuracy, confusion matrix and classification report for each model</li>
-      <li>ROC curve plot (one-vs-rest) and macro-average AUC values</li>
-      <li>GridSearchCV results (best hyperparameters and CV score)</li>
-      <li>Saved model using <code>pickle</code> for future inference</li>
-    </ul>
+    <section>
+      <h2>Expected outputs</h2>
+      <ul>
+        <li>Console logs with accuracy, confusion matrix and classification reports for each model.</li>
+        <li>ROC plot (shown with <code>matplotlib</code>) and printed AUC scores.</li>
+        <li>If GridSearch runs, best parameters and the final tuned estimator will be printed.</li>
+      </ul>
+    </section>
 
-    <h2>Notes & Tips</h2>
-    <div class="note">
-      <strong>Important:</strong> Datasets can be large — avoid committing big CSVs to your repo. Instead keep a small sample or include download instructions in <code>README</code>.
-    </div>
+    <section>
+      <h2>Troubleshooting & notes</h2>
+      <ul>
+        <li><strong>CSV format:</strong> Ensure the CSV has a header row and a column named exactly <code>label</code>.</li>
+        <li><strong>Multiclass AUC:</strong> The ROC stage uses a one-vs-rest AUC for class <code>1</code>. For a general multiclass AUC, consider <code>sklearn.metrics.roc_auc_score</code> with <code>multi_class='ovr'</code> or compute per-class AUCs.</li>
+        <li><strong>predict_proba availability:</strong> Some models (e.g. SVC) require <code>probability=True</code> to use <code>predict_proba</code>. The script already sets this for SVC used in this repo.</li>
+        <li><strong>Large dataset / speed:</strong> GridSearchCV with many parameter combinations can be slow — reduce the grid or use randomized search for faster tuning.</li>
+        <li><strong>Common errors:</strong> If you see <code>KeyError: 'label'</code>, check the CSV column names. If you see memory errors, try using a smaller sample or increase system memory.</li>
+      </ul>
+    </section>
 
-    <h2>License</h2>
-    <p>MIT License — see <code>LICENSE</code> (or change license as desired).</p>
+    <section>
+      <h2>Ideas to extend</h2>
+      <ul>
+        <li>Use cross-validation to compute stable mean & std of accuracy.</li>
+        <li>Implement scale/normalize steps (StandardScaler) inside a Pipeline.</li>
+        <li>Try dimensionality reduction (PCA) for speed and visualization.</li>
+        <li>Add model persisting with <code>joblib</code> or <code>pickle</code>.</li>
+        <li>Replace manual grid search with <code>RandomizedSearchCV</code> for larger search spaces.</li>
+      </ul>
+    </section>
 
-    <h2>Contact / Credits</h2>
-    <p>
-      <strong>Author:</strong> Pavan Illal<br />
-      <strong>GitHub:</strong> <a href="https://github.com/PavanIllal">https://github.com/PavanIllal</a><br />
-      <strong>Email:</strong> add-your-email@example.com (replace with your email)
-    </p>
+    <section>
+      <h2>License</h2>
+      <p>This repository is released under the MIT License — feel free to reuse and adapt (add a LICENSE file to the repo if you want to make it explicit).</p>
+    </section>
 
-    <div class="footer">
-      Last updated: <script>document.write(new Date().toLocaleDateString());</script>
-      <br />
-      If you want a <code>README.md</code> (Markdown) or a custom visual banner image included in the repo, tell me and I will generate them.
-    </div>
-  </div>
+    <section>
+      <h2>Contact</h2>
+      <p>Created by Pavan. Open an issue or pull request in the repository for questions or improvements.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Generated README for the MNIST Classification pipeline. Update contents as you add files or change the pipeline.</p>
+  </footer>
 </body>
 </html>
